@@ -1,0 +1,48 @@
+{
+  "name": "remote-code",
+  "version": "0.1.0",
+  "description": "live-reload for ssh connected devices 🐪 ⌨️️️️️",
+  "license": "MIT",
+  "repository": "anoff/remote-code",
+  "author": {
+    "name": "anoff",
+    "email": "offenhaeuser@gmail.com",
+    "url": "anoff.io"
+  },
+  "bin": "cli.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "test": "xo && nyc ava"
+  },
+  "files": [
+    "index.js",
+    "cli.js"
+  ],
+  "keywords": [
+    "cli-app",
+    "cli",
+    ""
+  ],
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "chokidar": "^1.6.1",
+    "meow": "^3.7.0",
+    "rsync": "^0.6.1",
+    "split": "^1.0.0",
+    "ssh2": "^0.5.4"
+  },
+  "devDependencies": {
+    "ava": "^0.17.0",
+    "coveralls": "^2.11.12",
+    "nyc": "^10.0.0",
+    "xo": "^0.17.0"
+  },
+  "nyc": {
+    "reporter": [
+      "lcov",
+      "text"
+    ]
+  }
+}
