@@ -44,5 +44,11 @@
       "lcov",
       "text"
     ]
+  },
+  "config": {
+    "cz-conventional-kawaii": {
+      "scopes": [],
+      "quick": true
+    }
   }
 }
