@@ -4,20 +4,17 @@ const meow = require('meow');
 const chalk = require('chalk');
 const RemoteCode = require('.');
 
-const sshSettings = {
-	host: '192.168.2.5',
-	port: 2221,
-	username: 'pi',
-	keyPath: '/Users/anoff/.ssh/id_pi',
-	privateKey: require('fs').readFileSync('/Users/anoff/.ssh/id_pi'),
-	keepaliveInterval: 500,
-	readyTimeout: 2000
-};
-
 const options = {
-	ssh: sshSettings,
+	ssh: {
+		host: '192.168.2.5',
+		port: 2221,
+		username: 'pi',
+		keyfilePath: '/Users/anoff/.ssh/id_pi',
+		keepaliveInterval: 500,
+		readyTimeout: 2000
+	},
 	source: '/developer/anoff/dummyApp',
-	target: '/home/pi/dummyApp'
+	target: '/home/pi'
 };
 
 const remoteCode = new RemoteCode(options);
@@ -47,11 +44,11 @@ liveSsh.getEventEmitter()
 			process.stdout.write(chalk.blue(data.toString()));
 		}
 	});
-liveSsh.connect(sshSettings);
-//remoteCode.syncCode();
 
 // make node process interactive by passing stdin to the remote shell
 process.stdin.pipe(split()).on('data', line => {
 	ignoreStdOut.push(line); // prevent this line from showing up in stdout
 	liveSsh.send(line);
 });
+
+remoteCode.start();
