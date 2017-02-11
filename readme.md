@@ -1,4 +1,5 @@
-# remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code) [![Coverage Status](https://coveralls.io/repos/github/anoff/remote-code/badge.svg?branch=master)](https://coveralls.io/github/anoff/remote-code?branch=master)
+remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code) [![Coverage Status](https://coveralls.io/repos/github/anoff/remote-code/badge.svg?branch=master)](https://coveralls.io/github/anoff/remote-code?branch=master)
+===
 
 > live-reload for ssh connected devices 🐪 ⌨️️️️️
 
@@ -9,13 +10,13 @@ _Why would I need that?_
 You may need it depending on your project and how you want to develop; my need for a tool like this emerged from projects supposed to run on a raspberry pi that heavily relies on using pi specific hardware like bluetooth, IO ports etc.
 The alternative to remote coding would be to develop on the pi directly. That means either replicating your dev setup onto the machine or working with less familiar tools.
 
-## Install
+# Install
 
 ```
 $ npm install --save remote-code
 ```
 
-### supported platforms
+## supported platforms
 
 `remote-code` relies heavily on other node modules to achieve the functionality, while they claim to support all major operating systems there currently is no test suite for this. Feel free to contribute 🐳
 
@@ -25,7 +26,13 @@ It has been tested for the following combinations of host/client
 |------|--------|
 | MacBook Pro | raspbian |
 
-## Usage
+## prerequisites
+
+Atm your host needs to fulfill a few requirements for this to work:
+* rsync installed
+* yarn & nodemon globally available (need to implement setup routines)
+
+# Usage
 
 
 ## API
@@ -71,6 +78,14 @@ $ remote-code --help
 ```
 
 
-## License
+# License
 
 MIT © [anoff](http://anoff.io)
+
+## Credits
+
+Kudos to the libraries I didn't have to worry about because someone else did:
+* [chokidar](https://github.com/paulmillr/chokidar): watch files on local system
+* [rsync](https://github.com/mattijs/node-rsync): copy code from local to remote
+* [nodemon](https://github.com/remy/nodemon): keep node process on remote running
+* [ssh2](https://github.com/mscdex/ssh2): start remote processes like `nodemon` and `npm/yarn install`
