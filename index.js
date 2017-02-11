@@ -22,13 +22,26 @@ class RemoteCode {
 		return this.sync.execute();
 	}
 
+	watch() {
+		this.watcher.start(this.options);
+		const emitter = this.watcher.getEventEmitter();
+		emitter.on('sync', () => {
+			this.syncCode();
+		});
+		return this.emitter;
+	}
+
 	start(opts = {}) {
 		this.options = Object.assign(this.options, opts);
+		const options = this.options;
 		const sshSettings = this.options.ssh;
 		return Promise.all([this.ssh.liveReload.connect(sshSettings),
 			this.ssh.installer.connect(sshSettings),
-			this.syncCode()]);
-
+			this.syncCode(), this.watch(this.options)])
+			.then(() => {
+				const lr = this.ssh.liveReload;
+				lr.send(`cd ${options.target} && yarn && nodemon .`);
+			});
 	}
 }
 
