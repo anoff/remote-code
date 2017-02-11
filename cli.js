@@ -14,7 +14,7 @@ const options = {
 		readyTimeout: 2000
 	},
 	source: '/developer/anoff/dummyApp',
-	target: '/home/pi'
+	target: '/home/pi/dummyApp'
 };
 
 const remoteCode = new RemoteCode(options);
