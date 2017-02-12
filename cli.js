@@ -32,6 +32,10 @@ const cli = meow(`
 	}
 });
 
+if (cli.input.length === 0) {
+	console.log(cli.help);
+	process.exit();
+}
 // parse argument for user/host
 const parts = url.parse(cli.input[0]);
 const options = {
@@ -44,10 +48,10 @@ const options = {
 		keepaliveInterval: 500,
 		readyTimeout: 2000
 	},
-	source: cli.flags.source,
-	target: cli.flags.target
+	source: path.normalize(cli.flags.source || process.cwd()),
+	target: cli.flags.target || '~'
 };
-
+console.log(options)
 // check for missing options
 !options.ssh.host && console.log('Please provide a valid host') && process.exit();
 !options.ssh.username && console.log('Please provide a valid username') && process.exit();
