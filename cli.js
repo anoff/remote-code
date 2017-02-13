@@ -5,7 +5,6 @@ const chalk = require('chalk');
 const meow = require('meow');
 const RemoteCode = require('.');
 
-
 const cli = meow(`
 	Usage
 		$ remote-code <[user@]host>
@@ -51,10 +50,18 @@ const options = {
 	source: path.normalize(cli.flags.source || process.cwd()),
 	target: cli.flags.target || '~'
 };
-console.log(options)
+console.log(options);
+
 // check for missing options
-!options.ssh.host && console.log('Please provide a valid host') && process.exit();
-!options.ssh.username && console.log('Please provide a valid username') && process.exit();
+if (!options.ssh.host) {
+	console.log('Please provide a valid host');
+	process.exit();
+}
+
+if (!options.ssh.username) {
+	console.log('Please provide a valid username');
+	process.exit();
+}
 
 const remoteCode = new RemoteCode(options);
 
