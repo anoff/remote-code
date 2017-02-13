@@ -3,7 +3,12 @@ const path = require('path');
 const url = require('ssh-url');
 const chalk = require('chalk');
 const meow = require('meow');
+const updateNotifier = require('update-notifier');
+const pkg = require('./package.json');
 const RemoteCode = require('.');
+
+// check for new version
+updateNotifier({pkg}).notify();
 
 const cli = meow(`
 	Usage
