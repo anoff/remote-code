@@ -11,12 +11,12 @@ const cli = meow(`
 		$ remote-code <[user@]host>
 
 	Options
-		--port, -p Custom port [22]
-		--identity-file, -i SSH keyfile
-		--user, -u SSH username
-		--password, -P SSH password (not supported)
-		--source, -s directory to synchronize (local) [CWD]
-		--target, -t remote location to sync to [~]
+		--port, -p		Custom port [22]
+		--identity-file, -i	SSH keyfile
+		--user, -u		SSH username
+		--password, -P		SSH password (not supported)
+		--source, -s 		directory to synchronize (local) [CWD]
+		--target, -t 		remote location to sync to [~]
 
 	Examples
 		$ remote-code user@192.168.0.4

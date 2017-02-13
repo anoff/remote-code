@@ -12,8 +12,10 @@ The alternative to remote coding would be to develop on the pi directly. That me
 
 # Install
 
+Recommended to use as CLI
+
 ```
-$ npm install --save remote-code
+$ npm i -g remote-code
 ```
 
 ## supported platforms
@@ -34,47 +36,26 @@ Atm your host needs to fulfill a few requirements for this to work:
 
 # Usage
 
-
-## API
-
-### remoteCode(input, [options])
-
-#### input
-
-Type: `string`
-
-Lorem ipsum.
-
-#### options
-
-##### foo
-
-Type: `boolean`<br>
-Default: `false`
-
-Lorem ipsum.
-
-
 ## CLI
 
 ```
-$ npm install --global remote-code
-```
-
-```
-$ remote-code --help
+$ remote-code help
+  live-reload for ssh connected devices 🐪 ⌨️️️️️
 
   Usage
-    remote-code [input]
+        $ remote-code <[user@]host>
 
   Options
-    --foo  Lorem ipsum [Default: false]
+        --port, -p              Custom port [22]
+        --identity-file, -i      SSH keyfile
+        --user, -u              SSH username
+        --password, -P          SSH password (not supported)
+        --source, -s            directory to synchronize (local) [CWD]
+        --target, -t            remote location to sync to [~]
 
   Examples
-    $ remote-code
-    unicorns & rainbows
-    $ remote-code ponies
-    ponies & rainbows
+        $ remote-code user@192.168.0.4
+        $ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
 ```
 
 
