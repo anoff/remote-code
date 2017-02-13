@@ -1,7 +1,11 @@
-remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code) [![Coverage Status](https://coveralls.io/repos/github/anoff/remote-code/badge.svg?branch=master)](https://coveralls.io/github/anoff/remote-code?branch=master)
+remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code)
 ===
 
 > live-reload for ssh connected devices 🐪 ⌨️️️️️
+
+<p align="center">
+  <img src="./logo.png"/>
+</p>
 
 _What is remote-code?_
 `remote-code` is a developer tool that helps you to write code on your normal developer machine but actually run on a remote device (e.g. raspberry pi). It automagically syncs your local files with the remote, runs `npm install` on the device if you update your `package.json` and makes sure the remote process keeps running while you develop using nodemon.
@@ -30,9 +34,11 @@ It has been tested for the following combinations of host/client
 
 ## prerequisites
 
-Atm your host needs to fulfill a few requirements for this to work:
+At the moment your host needs to fulfill a few requirements for this to work:
 * rsync installed
 * yarn & nodemon globally available (need to implement setup routines)
+
+_It is planned to ship `remote-code` with a **setup** routine that installs those dependencies on the remote_
 
 # Usage
 
