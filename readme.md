@@ -4,7 +4,7 @@ remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=
 > live-reload for ssh connected devices 🐪 ⌨️️️️️
 
 <p align="center">
-  <img src="./logo.png"/>
+  <img src="https://github.com/anoff/remote-code/raw/master/logo.png"/>
 </p>
 
 _What is remote-code?_
