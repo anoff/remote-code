@@ -11,7 +11,7 @@ class RemoteCode {
 			liveReload: new Ssh(),
 			installer: new Ssh()
 		};
-		this.watcher = new Watcher();
+		this.watcher = new Watcher(opts);
 		this.sync = new Sync(opts)
 			.addStdErrStream(console.err)
 			.addStdOutStream(console.log);
@@ -23,7 +23,7 @@ class RemoteCode {
 	}
 
 	watch() {
-		this.watcher.start(this.options);
+		this.watcher.start();
 		const emitter = this.watcher.getEventEmitter();
 		emitter.on('sync', () => {
 			this.syncCode();
@@ -31,13 +31,12 @@ class RemoteCode {
 		return this.emitter;
 	}
 
-	start(opts = {}) {
-		this.options = Object.assign(this.options, opts);
+	start() {
 		const options = this.options;
 		const sshSettings = this.options.ssh;
 		return Promise.all([this.ssh.liveReload.connect(sshSettings),
 			this.ssh.installer.connect(sshSettings),
-			this.syncCode(), this.watch(this.options)])
+			this.syncCode(), this.watch()])
 			.then(() => {
 				const lr = this.ssh.liveReload;
 				lr.send(`cd ${options.target} && yarn && nodemon .`);

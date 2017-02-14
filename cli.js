@@ -55,7 +55,6 @@ const options = {
 	source: path.normalize(cli.flags.source || process.cwd()),
 	target: cli.flags.target || '~'
 };
-console.log(options);
 
 // check for missing options
 if (!options.ssh.host) {
