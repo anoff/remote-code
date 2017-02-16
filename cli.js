@@ -82,3 +82,9 @@ liveSsh.getEventEmitter()
 	.on('data', data => process.stdout.write(chalk.blue(data.toString())));
 
 remoteCode.start();
+
+process.on('SIGINT', () => remoteCode.close());
+// TODO:
+// - catch SIGINT
+// - close rsync on ssh close
+// - figure out proper way to sync folder, default create new?!

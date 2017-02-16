@@ -42,6 +42,11 @@ class RemoteCode {
 				lr.send(`cd ${options.target} && yarn && nodemon .`);
 			});
 	}
+
+	close() {
+		return Promise.all([this.watcher.close(),
+			this.ssh.installer.end(), this.ssh.liveReload.end()]);
+	}
 }
 
 module.exports = RemoteCode;
