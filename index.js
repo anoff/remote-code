@@ -13,8 +13,8 @@ class RemoteCode {
 		};
 		this.watcher = new Watcher(opts);
 		this.sync = new Sync(opts)
-			.addStdErrStream(console.err)
-			.addStdOutStream(console.log);
+			.addStdErrStream(process.stderr)
+			.addStdOutStream(process.stdout);
 		return this;
 	}
 
@@ -27,6 +27,12 @@ class RemoteCode {
 		const emitter = this.watcher.getEventEmitter();
 		emitter.on('sync', () => {
 			this.syncCode();
+		});
+		emitter.on('install', () => {
+			this.syncCode()
+			.then(() => {
+				// TODO: restart nodemon
+			});
 		});
 		return this.emitter;
 	}
