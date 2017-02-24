@@ -1,6 +1,6 @@
 {
   "name": "remote-code",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "live-reload for ssh connected devices 🐪",
   "license": "MIT",
   "repository": "anoff/remote-code",
