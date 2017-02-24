@@ -5,6 +5,7 @@ const Ssh = require('./lib/ssh');
 const Sync = require('./lib/sync');
 
 const devNull = new stream.Writable();
+devNull._write = () => null;
 
 class RemoteCode {
 	constructor(opts = {}) {
@@ -13,7 +14,7 @@ class RemoteCode {
 		this.ssh = {
 			liveReload: new Ssh()
 		};
-		this.verbose = true;
+		this.verbose = opts.verbose || false;
 		this.stdout = opts.stdout instanceof stream.Writable ? opts.stdout : new stream.Writable();
 		this.stderr = opts.stderr instanceof stream.Writable ? opts.stderr : new stream.Writable();
 		this.watcher = new Watcher(opts);
@@ -45,11 +46,11 @@ class RemoteCode {
 
 	watch() {
 		this.watcher.start();
-		const emitter = this.watcher.getEventEmitter();
-		emitter.on('sync', () => {
+		const watchEmitter = this.watcher.getEventEmitter();
+		watchEmitter.on('sync', () => {
 			this.syncCode();
 		});
-		emitter.on('install', () => {
+		watchEmitter.on('install', () => {
 			return this.install()
 			.then(() => {
 				// this.ssh.liveReload.send('rs');

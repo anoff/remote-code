@@ -3,6 +3,7 @@ const path = require('path');
 const url = require('ssh-url');
 const chalk = require('chalk');
 const meow = require('meow');
+const stream = require('stream');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 const RemoteCode = require('.');
@@ -70,21 +71,39 @@ if (!options.ssh.username) {
 	process.exit();
 }
 
+// verbose stream processing
+const verbOut = new stream.Transform({
+	transform: function (chunk, enc, cb) {
+		cb(null, chalk.dim(chunk));
+	}
+});
+
+// apply dim style to verbose logs
+verbOut.pipe(process.stdout);
+
 options.stderr = process.stderr;
-options.stdout = process.stdout;
+options.stdout = verbOut;
 const remoteCode = new RemoteCode(options);
 
 // parse liveReload connection output
+function log(...data) {
+	console.log(chalk.magenta(...data));
+}
+
 const liveSsh = remoteCode.ssh.liveReload;
 liveSsh.getEventEmitter()
-	.on('connect', s => console.log(chalk.magenta(s)))
+	.on('connect', s => log('live-feed connected..'))
 	.on('close', s => {
-		console.log(chalk.magenta(s));
+		log('live-feed closed');
 		// end the node process once livechannel is gone (e.g. typing exit)
 		process.exit(0);
 	})
 	.on('error', s => console.log(chalk.bold.red(s)))
 	.on('data', data => process.stdout.write(chalk.blue(data.toString())));
+
+remoteCode.emitter
+	.on('start', () => log('Starting remote-code connections'))
+	.on('install', s => log(`Dependency installation ${s}`));
 
 remoteCode.start();
 
