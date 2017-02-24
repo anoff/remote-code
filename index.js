@@ -63,13 +63,13 @@ class RemoteCode {
 	start() {
 		this.emitter.emit('start');
 		const sshSettings = this.options.ssh;
-		return Promise.all([this.ssh.liveReload.connect(sshSettings),
-			this.syncCode(), this.watch()])
+		return Promise.all([this.syncCode(), this.watch()])
 			.then(() => this.install())
+			.then(() => this.ssh.liveReload.connect(sshSettings))
 			.then(() => {
 				this.ssh.liveReload.send(`cd ${this.options.target} && nodemon .`);
 			})
-			.catch(console.log.bind(console));
+			.catch(this._abort.bind(this));
 	}
 
 	// execute a single command and then resolve
@@ -99,6 +99,10 @@ class RemoteCode {
 		this.emitter.emit('close');
 		return Promise.all([this.watcher.close(),
 			this.ssh.liveReload.close()]);
+	}
+
+	_abort(err) {
+		this.emitter.emit('error', err);
 	}
 }
 

@@ -102,8 +102,15 @@ liveSsh.getEventEmitter()
 	.on('data', data => process.stdout.write(chalk.blue(data.toString())));
 
 remoteCode.emitter
-	.on('start', () => log('Starting remote-code connections'))
-	.on('install', s => log(`Dependency installation ${s}`));
+	.on('start', () => log('🐪\tStarting remote-code'))
+	.on('install', s => s !== 'triggered' ? log(`📦\tDependency installation ${s}`) : null)
+	.on('close', () => log('🐪\tShutting down remote-code'))
+	.on('sync', () => log('✈️\tSyncing files'))
+	.on('error', e => {
+		console.log(`💣\t${chalk.red(e)}`);
+		remoteCode.close()
+		.then(() => process.exit());
+	});
 
 remoteCode.start();
 
@@ -111,3 +118,4 @@ process.on('SIGINT', () => remoteCode.close());
 // TODO:
 // - close rsync on ssh close
 // - figure out proper way to sync folder, default create new?!
+
