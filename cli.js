@@ -20,7 +20,8 @@ const cli = meow(`
 		--user, -u		SSH username
 		--password, -P		SSH password (not supported)
 		--source, -s 		directory to synchronize (local) [CWD]
-		--target, -t 		remote location to sync to [~]
+		--target, -t 		remote location to sync to [~/remote-sync]
+		--verbose, -v 		log all the things
 
 	Examples
 		$ remote-code user@192.168.0.4
@@ -32,7 +33,8 @@ const cli = meow(`
 		u: 'user',
 		P: 'password',
 		s: 'source',
-		t: 'target'
+		t: 'target',
+		v: 'verbose'
 	}
 });
 
@@ -53,7 +55,8 @@ const options = {
 		readyTimeout: 2000
 	},
 	source: path.normalize(cli.flags.source || process.cwd()),
-	target: cli.flags.target || '~'
+	target: cli.flags.target || '~/remote-sync',
+	verbose: cli.flags.verbose
 };
 
 // check for missing options
@@ -67,6 +70,8 @@ if (!options.ssh.username) {
 	process.exit();
 }
 
+options.stderr = process.stderr;
+options.stdout = process.stdout;
 const remoteCode = new RemoteCode(options);
 
 // parse liveReload connection output
