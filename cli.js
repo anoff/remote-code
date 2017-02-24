@@ -92,9 +92,9 @@ function log(...data) {
 
 const liveSsh = remoteCode.ssh.liveReload;
 liveSsh.getEventEmitter()
-	.on('connect', s => log('live-feed connected..'))
+	.on('connect', s => log('👀\tlive-feed connected..'))
 	.on('close', s => {
-		log('live-feed closed');
+		log('👀\tlive-feed closed');
 		// end the node process once livechannel is gone (e.g. typing exit)
 		process.exit(0);
 	})
@@ -102,10 +102,10 @@ liveSsh.getEventEmitter()
 	.on('data', data => process.stdout.write(chalk.blue(data.toString())));
 
 remoteCode.emitter
-	.on('start', () => log('🐪\tStarting remote-code'))
-	.on('install', s => s !== 'triggered' ? log(`📦\tDependency installation ${s}`) : null)
-	.on('close', () => log('🐪\tShutting down remote-code'))
-	.on('sync', () => log('✈️\tSyncing files'))
+	.on('start', () => log('🐪\tstarting remote-code'))
+	.on('install', s => s !== 'triggered' ? log(`📦\tdependency installation ${s}`) : null)
+	.on('close', () => log('🐪\tshutting down remote-code'))
+	.on('sync', () => log('✈️\tsyncing files'))
 	.on('error', e => {
 		console.log(`💣\t${chalk.red(e)}`);
 		remoteCode.close()
@@ -116,6 +116,5 @@ remoteCode.start();
 
 process.on('SIGINT', () => remoteCode.close());
 // TODO:
-// - close rsync on ssh close
 // - figure out proper way to sync folder, default create new?!
 

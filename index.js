@@ -53,8 +53,7 @@ class RemoteCode {
 		watchEmitter.on('install', () => {
 			return this.install()
 			.then(() => {
-				// this.ssh.liveReload.send('rs');
-				//console.log('RESTARTERING')
+				this.ssh.liveReload.send('rs');
 			});
 		});
 		return this.emitter;
