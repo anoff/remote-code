@@ -66,6 +66,7 @@ class RemoteCode {
 			.then(() => this.install())
 			.then(() => this.ssh.liveReload.connect(sshSettings))
 			.then(() => {
+				this.emitter.emit('nodemon', 'start');
 				this.ssh.liveReload.send(`cd ${this.options.target} && nodemon .`);
 			})
 			.catch(this._abort.bind(this));

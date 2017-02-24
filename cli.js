@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 const path = require('path');
+const stream = require('stream');
 const url = require('ssh-url');
 const chalk = require('chalk');
 const meow = require('meow');
-const stream = require('stream');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
 const RemoteCode = require('.');
@@ -92,10 +92,10 @@ function log(...data) {
 
 const liveSsh = remoteCode.ssh.liveReload;
 liveSsh.getEventEmitter()
-	.on('connect', s => log('👀\tlive-feed connected..'))
-	.on('close', s => {
+	.on('connect', () => log('👀\tlive-feed connected..'))
+	.on('close', () => {
 		log('👀\tlive-feed closed');
-		// end the node process once livechannel is gone (e.g. typing exit)
+		// end the node process
 		process.exit(0);
 	})
 	.on('error', s => console.log(chalk.bold.red(s)))
@@ -103,7 +103,13 @@ liveSsh.getEventEmitter()
 
 remoteCode.emitter
 	.on('start', () => log('🐪\tstarting remote-code'))
-	.on('install', s => s !== 'triggered' ? log(`📦\tdependency installation ${s}`) : null)
+	.on('install', s => {
+		// do not log 'triggered' unless in verbose mode
+		if (options.verbose || s !== 'triggered') {
+			log(`📦\tdependency installation ${s}`);
+		}
+	})
+	.on('nodemon', () => log('🔃\tnodemon process started'))
 	.on('close', () => log('🐪\tshutting down remote-code'))
 	.on('sync', () => log('✈️\tsyncing files'))
 	.on('error', e => {
