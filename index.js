@@ -67,7 +67,7 @@ class RemoteCode {
 			.then(() => this.ssh.liveReload.connect(sshSettings))
 			.then(() => {
 				this.emitter.emit('nodemon', 'start');
-				this.ssh.liveReload.send(`cd ${this.options.target} && nodemon .`);
+				this.ssh.liveReload.send(`cd ${this.options.target} && ${this.options.start}`);
 			})
 			.catch(this._abort.bind(this));
 	}
@@ -84,7 +84,7 @@ class RemoteCode {
 		if (!this.installInProgress) {
 			this.emitter.emit('install', 'started');
 			this.installInProgress = true;
-			return this.execute(`cd ${this.options.target} && yarn`, this._getStdOut(), this._getStdErr())
+			return this.execute(`cd ${this.options.target} && ${this.options.install}`, this._getStdOut(), this._getStdErr())
 			.then(res => {
 				this.emitter.emit('install', 'ended', res);
 				this.installInProgress = false;

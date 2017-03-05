@@ -25,25 +25,29 @@ const cli = meow(`
 
 
 	Options
-		--port, -p		Custom port [22]
 		--identity-file, -i	SSH keyfile
-		--user, -u		SSH username
-		--password, -P		SSH password (not supported)
+		--install, -I		installation / setup command [yarn]
+		--port, -p		Custom port [22]
 		--source, -s 		directory to synchronize (local) [CWD]
+		--start, -S		command to start on remote (should implement a file watcher) [nodemon .]
 		--target, -t 		remote location to sync to [~/remote-sync]
+		--user, -u		SSH username
 		--verbose, -v 		log all the things
 
 	Examples
 		$ remote-code user@192.168.0.4
 		$ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
 		$ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target ~/myProject
+		$ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 -S 'sudo \`which node\` johnny5' -I "npm install"
 `, {
 	alias: {
 		p: 'port',
 		i: 'identity-file',
+		I: 'install',
 		u: 'user',
-		P: 'password',
+		P: 'password', /* TODO		--password, -P		SSH password (not supported)*/
 		s: 'source',
+		S: 'start',
 		t: 'target',
 		v: 'verbose'
 	}
@@ -65,7 +69,9 @@ const options = {
 		keepaliveInterval: 500,
 		readyTimeout: 2000
 	},
+	install: cli.flags.install || 'yarn',
 	source: path.normalize(cli.flags.source || process.cwd()),
+	start: cli.flags.start || 'nodemon .',
 	target: cli.flags.target || '~/remote-sync',
 	verbose: cli.flags.verbose
 };
