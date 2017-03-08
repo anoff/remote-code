@@ -1,4 +1,4 @@
-remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code)
+remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code) [![npm](https://img.shields.io/npm/v/remote-code.svg)]()
 ===
 
 > live-reload for ssh connected devices 🐪
@@ -80,6 +80,7 @@ $ remote-code help
 * [ ] ship with `setup` routine to install `yarn` & `nodemon` if they are missing on remote
 * [ ] test if this works with virtual machines as a target (e.g. EC2)
 * [ ] test password authentication
+* [ ] move options logic to index to allow testing for defaults
 
 If you find anything that you don't like **create an issue**.
 
