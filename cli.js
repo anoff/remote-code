@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const meow = require('meow');
 const updateNotifier = require('update-notifier');
 const pkg = require('./package.json');
-const RemoteCode = require('.');
+const RemoteCode = require('./index');
 
 // check for new version
 updateNotifier({pkg}).notify();
@@ -45,7 +45,7 @@ const cli = meow(`
 		i: 'identity-file',
 		I: 'install',
 		u: 'user',
-		P: 'password', /* TODO		--password, -P		SSH password (not supported)*/
+		P: 'password', /* TODO		--password, -P		SSH password (not supported) */
 		s: 'source',
 		S: 'start',
 		t: 'target',
@@ -53,6 +53,7 @@ const cli = meow(`
 	}
 });
 
+// show help if no host is supplied
 if (cli.input.length === 0) {
 	console.log(cli.help);
 	process.exit();
@@ -81,7 +82,6 @@ if (!options.ssh.host) {
 	console.log('Please provide a valid host');
 	process.exit();
 }
-
 if (!options.ssh.username) {
 	console.log('Please provide a valid username');
 	process.exit();
@@ -101,11 +101,12 @@ options.stderr = process.stderr;
 options.stdout = verbOut;
 const remoteCode = new RemoteCode(options);
 
-// parse liveReload connection output
+// turn everything magenta
 function log(...data) {
 	console.log(chalk.magenta(...data));
 }
 
+// add console output for livefeed (process on the remote)
 const liveSsh = remoteCode.ssh.liveReload;
 liveSsh.getEventEmitter()
 	.on('connect', () => log('👀\tlive-feed connected..'))
@@ -117,6 +118,7 @@ liveSsh.getEventEmitter()
 	.on('error', s => console.log(chalk.bold.red(s)))
 	.on('data', data => process.stdout.write(chalk.blue(data.toString())));
 
+// add generic output for the overall process of the remotecode execution
 remoteCode.emitter
 	.on('start', () => log('🐪\tstarting remote-code'))
 	.on('install', s => {
@@ -134,9 +136,8 @@ remoteCode.emitter
 		.then(() => process.exit());
 	});
 
+// start remotecode procedure
 remoteCode.start();
 
+// listen for ctrl+c on terminal
 process.on('SIGINT', () => remoteCode.close());
-// TODO:
-// - figure out proper way to sync folder, default create new?!
-
