@@ -50,30 +50,30 @@ $ remote-code help
   live-reload for ssh connected devices 🐪
 
   Usage
-  	$ remote-code <[user@]host>
+    $ remote-code <[user@]host>
 
-  	This will happen:
-  	✈️	sync local directory content with remote dir
-  	📦	run 'yarn' to install dependencies
-  	👀	open a ssh stream to view remote output
-  	🔃	run 'nodemon .' in the remote directory
+    This will happen:
+    ✈️  sync local directory content with remote dir
+    📦  run 'yarn' to install dependencies
+    👀  open a ssh stream to view remote output
+    🔃  run 'nodemon .' in the remote directory
 
-  	Note: Without specifying --source and/or --target default dirs will be used. You should only do this for testing as the directory could be dirty from previous runs.
+    Note: Without specifying --source and/or --target default dirs will be used. You should only do this for testing as the directory could be dirty from previous runs.
 
 
   Options
-  	--port, -p		Custom port [22]
-  	--identity-file, -i	SSH keyfile
-  	--user, -u		SSH username
-  	--password, -P		SSH password (not supported)
-  	--source, -s 		directory to synchronize (local) [CWD]
-  	--target, -t 		remote location to sync to [~/remote-sync]
-  	--verbose, -v 		log all the things
+    --port, -p    Custom port [22]
+    --identity-file, -i  SSH keyfile
+    --user, -u    SSH username
+    --password, -P    SSH password (not supported)
+    --source, -s     directory to synchronize (local) [CWD]
+    --target, -t     remote location to sync to [~/remote-sync]
+    --verbose, -v     log all the things
 
   Examples
-  	$ remote-code user@192.168.0.4
-  	$ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
-  	$ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target ~/myProjec
+    $ remote-code user@192.168.0.4
+    $ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
+    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target ~/myProjec
 ```
 
 ## Todo
