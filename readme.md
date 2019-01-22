@@ -41,7 +41,7 @@ It has been tested for the following combinations of host/client
 At the moment your host needs to fulfill a few requirements for this to work:
 
 - rsync installed
-- yarn & nodemon globally available
+- npm & nodemon globally available
 - remote target needs to have reachable npm upstream to install dependencies (i.e. internet connection)
 
 # Usage
@@ -55,7 +55,7 @@ $ remote-code help
 
     This will happen:
     ✈️  sync local directory content with remote dir
-    📦  run 'yarn' to install dependencies
+    📦  run 'npm install' to install dependencies
     👀  open a ssh stream to view remote output
     🔃  run 'nodemon .' in the remote directory
 
@@ -64,7 +64,7 @@ $ remote-code help
 
   Options
     --identity-file,  -i    SSH keyfile
-    --install-cmd,    -I    installation / setup command [yarn]
+    --install-cmd,    -I    installation / setup command [npm install]
     --port,           -p    Custom port [22]
     --source,         -s    directory to synchronize (local) [CWD]
     --start-cmd,      -S    command to start on remote (should implement a file watcher) [nodemon .]
@@ -92,7 +92,7 @@ Note: See [this list](https://lxadm.com/Rsync_exit_codes) for other rsync error 
 
 ## Todo
 
-- [ ] ship with `setup` routine to install `yarn` & `nodemon` if they are missing on remote
+- [ ] ship with `setup` routine to install `npm` & `nodemon` if they are missing on remote
 - [ ] test if this works with virtual machines as a target (e.g. EC2)
 - [ ] test password authentication
 - [ ] move options logic to index to allow testing for defaults
@@ -110,4 +110,4 @@ Kudos to the libraries I didn't have to worry about because someone else did:
 - [chokidar](https://github.com/paulmillr/chokidar): watch files on local system
 - [rsync](https://github.com/mattijs/node-rsync): a great wrapper around the rsync binary
 - [nodemon](https://github.com/remy/nodemon): keep node process on remote running
-- [ssh2](https://github.com/mscdex/ssh2): start remote processes like `nodemon` and `npm/yarn install`
+- [ssh2](https://github.com/mscdex/ssh2): start remote processes like `nodemon` and `npm install`

@@ -18,7 +18,7 @@ const cli = meow(`
 
     This will happen:
     ✈️  sync local directory content with remote dir
-    📦  run 'yarn' to install dependencies
+    📦  run 'npm install' to install dependencies
     👀  open a ssh stream to view remote output
     🔃  run 'nodemon .' in the remote directory
 
@@ -27,7 +27,7 @@ const cli = meow(`
 
   Options
     --identity-file,  -i    SSH keyfile
-    --install-cmd,    -I    installation / setup command [yarn]
+    --install-cmd,    -I    installation / setup command [npm install]
     --port,           -p    Custom port [22]
     --source,         -s    directory to synchronize (local) [CWD]
     --start-cmd,      -S    command to start on remote (should implement a file watcher) [nodemon .]
@@ -96,7 +96,7 @@ const options = {
     keepaliveInterval: 500,
     readyTimeout: 2000
   },
-  install: cli.flags.installCmd || 'yarn',
+  install: cli.flags.installCmd || 'npm install',
   source: path.normalize(cli.flags.source || process.cwd()),
   start: cli.flags.startCmd || 'nodemon .',
   target: cli.flags.target || '~/remote-sync',
