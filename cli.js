@@ -80,11 +80,11 @@ const options = {
 // check for missing options
 if (!options.ssh.host) {
   console.log('Please provide a valid host')
-  process.exit()
+  process.exit(1)
 }
 if (!options.ssh.username) {
   console.log('Please provide a valid username')
-  process.exit()
+  process.exit(1)
 }
 
 // verbose stream processing
@@ -133,7 +133,7 @@ remoteCode.emitter
   .on('error', e => {
     console.log(`💣\t${chalk.red(e)}`)
     remoteCode.close()
-      .then(() => process.exit())
+      .then(() => process.exit(1))
   })
 
 // start remotecode procedure
