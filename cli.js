@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+const fs = require('fs')
 const path = require('path')
 const stream = require('stream')
 const url = require('ssh-url')
@@ -72,6 +73,9 @@ const cli = meow(`
     verbose: {
       type: 'boolean',
       alias: 'v'
+    },
+    debug: {
+      type: 'boolean'
     }
   }
 })
@@ -96,22 +100,27 @@ const options = {
   source: path.normalize(cli.flags.source || process.cwd()),
   start: cli.flags.startCmd || 'nodemon .',
   target: cli.flags.target || '~/remote-sync',
-  verbose: cli.flags.verbose
+  verbose: cli.flags.verbose,
+  debug: cli.flags.debug
 }
-if (options.verbose) {
+if (options.debug) {
   console.log('Parsed arguments:', options)
 }
 // check for missing options
 if (!options.ssh.host) {
-  console.log('Please provide a valid host')
+  console.error('Please provide a valid host')
   process.exit(1)
 }
 if (!options.ssh.username) {
-  console.log('Please provide a valid username')
+  console.error('Please provide a valid username')
   process.exit(1)
 }
-if (!options.ssh.keyfilePath) {
-  console.log('SSH identity file does not exist')
+if (!options.ssh.keyfilePath || !fs.existsSync(options.ssh.keyfilePath)) {
+  console.error('SSH identity file does not exist:', options.ssh.keyfilePath)
+  process.exit(1)
+}
+if (!fs.existsSync(options.source)) {
+  console.error('Source directory does not exist:', options.source)
   process.exit(1)
 }
 // verbose stream processing
