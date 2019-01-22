@@ -25,31 +25,54 @@ const cli = meow(`
 
 
   Options
-    --identity-file, -i  SSH keyfile
-    --install, -I    installation / setup command [yarn]
-    --port, -p    Custom port [22]
-    --source, -s     directory to synchronize (local) [CWD]
-    --start, -S    command to start on remote (should implement a file watcher) [nodemon .]
-    --target, -t     remote location to sync to [~/remote-sync]
-    --user, -u    SSH username
-    --verbose, -v     log all the things
+    --identity-file,  -i    SSH keyfile
+    --install-cmd,    -I    installation / setup command [yarn]
+    --port,           -p    Custom port [22]
+    --source,         -s    directory to synchronize (local) [CWD]
+    --start-cmd,      -S    command to start on remote (should implement a file watcher) [nodemon .]
+    --target,         -t    remote location to sync to ["~/remote-sync"]
+    --user,           -u    SSH username
+    --verbose,        -v    log all the things
 
   Examples
     $ remote-code user@192.168.0.4
     $ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
-    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target ~/myProject
+    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target "~/myProject"
     $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 -S 'sudo \`which node\` johnny5' -I "npm install"
 `, {
-  alias: {
-    p: 'port',
-    i: 'identity-file',
-    I: 'install',
-    u: 'user',
-    P: 'password', /* TODO    --password, -P    SSH password (not supported) */
-    s: 'source',
-    S: 'start',
-    t: 'target',
-    v: 'verbose'
+  flags: {
+    port: {
+      type: 'number',
+      alias: 'p'
+    },
+    identityFile: {
+      type: 'string',
+      alias: 'i'
+    },
+    installCmd: {
+      type: 'string',
+      alias: 'I'
+    },
+    user: {
+      type: 'string',
+      alias: 'u'
+    },
+    source: {
+      type: 'string',
+      alias: 's'
+    },
+    startCmd: {
+      type: 'string',
+      alias: 'S'
+    },
+    target: {
+      type: 'string',
+      alias: 't'
+    },
+    verbose: {
+      type: 'boolean',
+      alias: 'v'
+    }
   }
 })
 
@@ -66,17 +89,18 @@ const options = {
     port: cli.flags.port || 22,
     username: cli.flags.user || parts.user,
     keyfilePath: cli.flags.identityFile,
-    password: cli.flags.password,
     keepaliveInterval: 500,
     readyTimeout: 2000
   },
-  install: cli.flags.install || 'yarn',
+  install: cli.flags.installCmd || 'yarn',
   source: path.normalize(cli.flags.source || process.cwd()),
-  start: cli.flags.start || 'nodemon .',
+  start: cli.flags.startCmd || 'nodemon .',
   target: cli.flags.target || '~/remote-sync',
   verbose: cli.flags.verbose
 }
-
+if (options.verbose) {
+  console.log('Parsed arguments:', options)
+}
 // check for missing options
 if (!options.ssh.host) {
   console.log('Please provide a valid host')
@@ -86,7 +110,10 @@ if (!options.ssh.username) {
   console.log('Please provide a valid username')
   process.exit(1)
 }
-
+if (!options.ssh.keyfilePath) {
+  console.log('SSH identity file does not exist')
+  process.exit(1)
+}
 // verbose stream processing
 const verbOut = new stream.Transform({
   transform: function (chunk, enc, cb) {

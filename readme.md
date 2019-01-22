@@ -1,5 +1,5 @@
-remote-code [![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code) [![npm](https://img.shields.io/npm/v/remote-code.svg)]() [![Greenkeeper badge](https://badges.greenkeeper.io/anoff/remote-code.svg)](https://greenkeeper.io/)
-===
+# remote-code
+[![Build Status](https://travis-ci.org/anoff/remote-code.svg?branch=master)](https://travis-ci.org/anoff/remote-code) [![npm](https://img.shields.io/npm/v/remote-code.svg)]() [![Greenkeeper badge](https://badges.greenkeeper.io/anoff/remote-code.svg)](https://greenkeeper.io/)
 
 > live-reload for ssh connected devices 🐪
 
@@ -39,9 +39,10 @@ It has been tested for the following combinations of host/client
 ## prerequisites
 
 At the moment your host needs to fulfill a few requirements for this to work:
-* rsync installed
-* yarn & nodemon globally available
-* remote target needs to have reachable npm upstream to install dependencies (i.e. internet connection)
+
+- rsync installed
+- yarn & nodemon globally available
+- remote target needs to have reachable npm upstream to install dependencies (i.e. internet connection)
 
 # Usage
 
@@ -62,36 +63,51 @@ $ remote-code help
 
 
   Options
-    --port, -p    Custom port [22]
-    --identity-file, -i  SSH keyfile
-    --user, -u    SSH username
-    --password, -P    SSH password (not supported)
-    --source, -s     directory to synchronize (local) [CWD]
-    --target, -t     remote location to sync to [~/remote-sync]
-    --verbose, -v     log all the things
+    --identity-file,  -i    SSH keyfile
+    --install-cmd,    -I    installation / setup command [yarn]
+    --port,           -p    Custom port [22]
+    --source,         -s    directory to synchronize (local) [CWD]
+    --start-cmd,      -S    command to start on remote (should implement a file watcher) [nodemon .]
+    --target,         -t    remote location to sync to ["~/remote-sync"]
+    --user,           -u    SSH username
+    --verbose,        -v    log all the things
 
   Examples
     $ remote-code user@192.168.0.4
     $ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
-    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target ~/myProjec
-```
+    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target "~/myProject"
+    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 -S 'sudo \`which node\` johnny5' -I "npm install"```
+
+## FAQ
+
+### Error: rsync exited with code 12
+
+Getting this error after the `✈️       syncing files` message usually indicates issues with the availability of `rsync` on your client/server. Please check the following:
+
+- your identify file is correct
+- try running the command with `--verbose` and look for the `rsync` command that is being logged after the file sync is initiated, verify that the arguments look OK
+- compare the rsync versions of host and client using `rsync --version`, if the protocol versions differentiate too much it might be an issue
+
+Note: See [this list](https://lxadm.com/Rsync_exit_codes) for other rsync error codes
 
 ## Todo
-* [ ] ship with `setup` routine to install `yarn` & `nodemon` if they are missing on remote
-* [ ] test if this works with virtual machines as a target (e.g. EC2)
-* [ ] test password authentication
-* [ ] move options logic to index to allow testing for defaults
+
+- [ ] ship with `setup` routine to install `yarn` & `nodemon` if they are missing on remote
+- [ ] test if this works with virtual machines as a target (e.g. EC2)
+- [ ] test password authentication
+- [ ] move options logic to index to allow testing for defaults
 
 If you find anything that you don't like **create an issue**.
 
 # License
 
-MIT © [anoff](http://anoff.io)
+MIT © [Andreas Offenhaeuser](https://anoff.io)
 
 ## Credits
 
 Kudos to the libraries I didn't have to worry about because someone else did:
-* [chokidar](https://github.com/paulmillr/chokidar): watch files on local system
-* [rsync](https://github.com/mattijs/node-rsync): copy code from local to remote
-* [nodemon](https://github.com/remy/nodemon): keep node process on remote running
-* [ssh2](https://github.com/mscdex/ssh2): start remote processes like `nodemon` and `npm/yarn install`
+
+- [chokidar](https://github.com/paulmillr/chokidar): watch files on local system
+- [rsync](https://github.com/mattijs/node-rsync): a great wrapper around the rsync binary
+- [nodemon](https://github.com/remy/nodemon): keep node process on remote running
+- [ssh2](https://github.com/mscdex/ssh2): start remote processes like `nodemon` and `npm/yarn install`
