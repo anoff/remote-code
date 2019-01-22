@@ -20,6 +20,8 @@ The alternative to remote coding would be to develop on the pi directly. That me
 
 # Install
 
+> ⚠️ Please check that your remote host fulfills all [prerequisites](#prerequisites)
+
 Recommended to use as CLI
 
 ```
@@ -30,19 +32,19 @@ $ npm i -g remote-code
 
 `remote-code` relies heavily on other node modules to achieve the functionality, while they claim to support all major operating systems there currently is no test suite for this. Feel free to contribute 🐳
 
-It has been tested for the following combinations of host/client
+It has been tested for the following combinations of local/remote
 
-| host | client |
+| local | remote |
 |------|--------|
 | MacBook Pro | raspbian |
 
 ## prerequisites
 
-At the moment your host needs to fulfill a few requirements for this to work:
+At the moment your remote host needs to fulfill a few requirements for this to work:
 
-- rsync installed
-- npm & nodemon globally available
-- remote target needs to have reachable npm upstream to install dependencies (i.e. internet connection)
+1. rsync installed
+1. npm & nodemon globally available (if you use the default start command)
+1. remote target needs to have reachable npm upstream to install dependencies (i.e. internet connection)
 
 # Usage
 
@@ -89,6 +91,10 @@ Getting this error after the `✈️       syncing files` message usually indica
 - compare the rsync versions of host and client using `rsync --version`, if the protocol versions differentiate too much it might be an issue
 
 Note: See [this list](https://lxadm.com/Rsync_exit_codes) for other rsync error codes
+
+### Error: rsync exited with code 127
+
+This error might pop up if the remote host does not have `rsync` installed. Please verify you have it installed.
 
 ## Todo
 
