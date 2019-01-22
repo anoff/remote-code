@@ -37,6 +37,8 @@ It has been tested for the following combinations of local/remote
 | local | remote |
 |------|--------|
 | MacBook Pro | raspbian |
+| MacBook 2017 | Ubuntu 18.04 (AWS EC2) |
+| MacBook 2017 | RHEL 7.6 (AWS EC2) |
 
 ## prerequisites
 

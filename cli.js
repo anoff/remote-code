@@ -163,7 +163,7 @@ remoteCode.emitter
       log(`📦\tdependency installation ${s}`)
     }
   })
-  .on('nodemon', () => log('🔃\tnodemon process started'))
+  .on('startCmd', s => log(`🔃\t${s} '${options.start}'`))
   .on('close', () => log('🐪\tshutting down remote-code'))
   .on('sync', () => log('✈️\tsyncing files'))
   .on('error', e => {

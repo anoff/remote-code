@@ -12,7 +12,7 @@ class RemoteCode {
     this.options = opts
     this.emitter = new EventEmitter()
     this.ssh = {
-      liveReload: new Ssh()
+      liveReload: new Ssh().init()
     }
     this.verbose = opts.verbose || false
     this.stdout = opts.stdout instanceof stream.Writable ? opts.stdout : new stream.Writable()
@@ -66,7 +66,7 @@ class RemoteCode {
       .then(() => this.install())
       .then(() => this.ssh.liveReload.connect(sshSettings))
       .then(() => {
-        this.emitter.emit('nodemon', 'start')
+        this.emitter.emit('startCmd', 'start')
         this.ssh.liveReload.send(`cd ${this.options.target} && ${this.options.start}`)
       })
       .catch(this._abort.bind(this))
@@ -76,23 +76,30 @@ class RemoteCode {
   execute (cmd, stdout, stderr) {
     this.emitter.emit('exec', cmd)
     const ssh = new Ssh()
-    return ssh.exec(this.options.ssh, cmd, stdout, stderr)
+    return ssh.execute(this.options.ssh, cmd, stdout, stderr)
   }
 
   install () {
-    this.emitter.emit('install', 'triggered')
-    if (!this.installInProgress) {
-      this.emitter.emit('install', 'started')
-      this.installInProgress = true
-      return this.execute(`cd ${this.options.target} && ${this.options.install}`, this._getStdOut(), this._getStdErr())
-        .then(res => {
-          this.emitter.emit('install', 'ended', res)
-          this.installInProgress = false
-          // console.log(res);
-          return res
-        })
-    }
-    return Promise.resolve()
+    return new Promise((resolve, reject) => {
+      this.emitter.emit('install', 'triggered')
+      if (!this.installInProgress) {
+        this.emitter.emit('install', 'started')
+        this.installInProgress = true
+        return this.execute(`cd ${this.options.target} && ${this.options.install}`, this._getStdOut(), this._getStdErr())
+          .then(res => {
+            // { code = exit code, data = message string, signal}
+            if (res.code === 0) {
+              this.emitter.emit('install', 'ended', res)
+              resolve(res)
+            } else {
+              this.emitter.emit('install', 'failed', res)
+              this.emitter.emit('error', 'aborting..')
+              reject(res)
+            }
+            this.installInProgress = false
+          })
+      }
+    })
   }
 
   close () {
