@@ -11,7 +11,7 @@
   },
   "bin": "cli.js",
   "engines": {
-    "node": ">=6"
+    "node": ">=8"
   },
   "scripts": {
     "test": "standard && ava"
@@ -34,7 +34,7 @@
     "update-notifier": "^3.0.0"
   },
   "devDependencies": {
-    "ava": "^1.0.1",
+    "ava": "^2.0.0",
     "coveralls": "^3.0.2",
     "nyc": "^14.0.0",
     "standard": "^12.0.1",
