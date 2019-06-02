@@ -80,7 +80,8 @@ $ remote-code help
     $ remote-code user@192.168.0.4
     $ remote-code -p 23 -i ~/.ssh/id_rsa --user admin 192.168.0.4
     $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 --source ~/myProject --target "~/myProject"
-    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 -S 'sudo \`which node\` johnny5' -I "npm install"```
+    $ remote-code -i ~/.ssh/id_rsa pi@192.168.0.4 -S 'sudo \`which node\` johnny5' -I "npm install"
+```
 
 ## FAQ
 
