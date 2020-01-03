@@ -38,7 +38,7 @@
     "coveralls": "^3.0.2",
     "nyc": "^15.0.0",
     "standard": "^14.0.0",
-    "testdouble": "^3.8.2",
+    "testdouble": "^3.12.5",
     "xo": "^0.25.0"
   },
   "nyc": {
