@@ -27,7 +27,7 @@
   "dependencies": {
     "chalk": "^3.0.0",
     "chokidar": "^3.0.0",
-    "meow": "^5.0.0",
+    "meow": "^6.1.0",
     "rsync": "^0.6.1",
     "ssh-url": "^0.1.5",
     "ssh2": "^0.8.0",
